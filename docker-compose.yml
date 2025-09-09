@@ -1,0 +1,24 @@
+services:
+  llama-cpp-service:
+    mem_limit: 2000m
+    cpus: 6
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: llama-cpp-service
+    networks:
+      - llama_cpp_network
+    ports:
+      - '127.0.0.1:8001:8001'
+    restart: unless-stopped
+    runtime: nvidia
+    deploy:
+      resources:
+        reservations:
+          devices:
+            - driver: nvidia
+              count: all
+              capabilities: [gpu]
+networks:
+  llama_cpp_network:
+    driver: bridge
